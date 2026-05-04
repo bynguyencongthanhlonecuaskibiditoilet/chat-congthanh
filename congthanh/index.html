@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload File PRO</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #111;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+input, button {
+  padding: 10px;
+  margin: 10px;
+}
+
+a {
+  color: #4fc3f7;
+  word-break: break-all;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🚀 Upload File</h2>
+
+<input type="file" id="files" multiple>
+<br>
+<button onclick="upload()">Upload</button>
+
+<div id="result"></div>
+
+<script>
+// ⚠️ THAY LINK NÀY
+const API = "https://congthanhhtt.onrender.com";
+
+async function upload(){
+  let input = document.getElementById("files");
+  let files = input.files;
+
+  if(files.length === 0){
+    alert("Chọn file đi bro");
+    return;
+  }
+
+  let formData = new FormData();
+
+  for(let i=0;i<files.length;i++){
+    formData.append("files", files[i]);
+  }
+
+  document.getElementById("result").innerHTML = "⏳ Đang upload...";
+
+  let res = await fetch(API + "/up", {
+    method: "POST",
+    body: formData
+  });
+
+  let data = await res.json();
+
+  let html = "<h3>📎 Link của bạn:</h3>";
+
+  data.files.forEach(url => {
+    html += `<p><a href="${url}" target="_blank">${url}</a></p>`;
+  });
+
+  document.getElementById("result").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
